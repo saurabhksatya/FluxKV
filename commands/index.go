@@ -18,6 +18,8 @@ func register(name string, command CommandInterface) {
 
 func init() {
 	register("PING", &PingCommand{})
+	register("GET", &GetCommand{})
+	register("SET", &SetCommand{})
 }
 
 func ExecuteCommand(conn net.Conn, cmd []string, db *internal.DataStore) {

@@ -63,6 +63,8 @@ func (s *Server) Listen(addr *net.TCPAddr) error {
 	}
 	utils.Logger.Info("Listening on " + addr.String())
 
+	go s.eventLoop()
+
 	for {
 		conn, err := listener.Accept()
 		if err != nil {
