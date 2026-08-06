@@ -20,6 +20,7 @@ func init() {
 	register("PING", &PingCommand{})
 	register("GET", &GetCommand{})
 	register("SET", &SetCommand{})
+	register("INFO", &InfoCommand{})
 }
 
 func ExecuteCommand(conn net.Conn, cmd []string, db *internal.DataStore) {
