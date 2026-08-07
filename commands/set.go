@@ -1,18 +1,13 @@
 package commands
 
-import (
-	"fluxKV/internal"
-	"net"
-)
-
 type SetCommand struct{}
 
-func (s *SetCommand) execute(conn net.Conn, cmd []string, db *internal.DataStore) {
+func (s *SetCommand) execute(ctx *ctxInterface, cmd []string) {
 	if len(cmd) != 3 {
-		conn.Write([]byte("-ERR wrong number of arguments\r\n"))
+		ctx.Conn.Write([]byte("-ERR wrong number of arguments\r\n"))
 		return
 	}
 
-	db.Set(cmd[1], cmd[2])
-	conn.Write([]byte("+OK\r\n"))
+	ctx.DB.Set(cmd[1], cmd[2])
+	ctx.Conn.Write([]byte("+OK\r\n"))
 }

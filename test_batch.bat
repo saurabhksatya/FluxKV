@@ -1,0 +1,1 @@
+go test -count=1 -v ./loadtest -run TestLoad -timeout 60s   

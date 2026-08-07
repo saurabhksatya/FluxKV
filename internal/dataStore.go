@@ -19,6 +19,14 @@ func (db *DataStore) Get(key string) (string, bool) {
 	return value, ok
 }
 
-func (db *DataStore) Delete(key string) {
-	delete(db.data, key)
+func (db *DataStore) Delete(key string) bool {
+	_, exists := db.data[key]
+	if exists {
+		delete(db.data, key)
+	}
+	return exists
+}
+
+func (db *DataStore) Size() int {
+	return len(db.data)
 }
