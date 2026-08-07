@@ -1,9 +1,7 @@
 package commands
 
 import (
-	"fluxKV/internal"
 	"fmt"
-	"net"
 	"os"
 	"runtime"
 	"time"
@@ -18,7 +16,7 @@ var (
 	proc, _   = process.NewProcess(int32(os.Getpid()))
 )
 
-func (i *InfoCommand) execute(conn net.Conn, cmd []string, db *internal.DataStore) {
+func (i *InfoCommand) execute(ctx *ctxInterface, cmd []string) {
 	var mem runtime.MemStats
 	runtime.ReadMemStats(&mem)
 
@@ -47,6 +45,7 @@ func (i *InfoCommand) execute(conn net.Conn, cmd []string, db *internal.DataStor
 			"used_memory_human:%.2fM\r\n"+
 			"process_memory:%d\r\n"+
 			"process_memory_human:%.2fM\r\n"+
+			"total_keys:%d\r\n"+
 			"\r\n"+
 			"# CPU\r\n"+
 			"process_cpu_percent:%.2f\r\n"+
@@ -60,10 +59,11 @@ func (i *InfoCommand) execute(conn net.Conn, cmd []string, db *internal.DataStor
 		float64(mem.Alloc)/(1024*1024),
 		rss,
 		float64(rss)/(1024*1024),
+		ctx.DB.Size(),
 		cpuPercent,
 		runtime.NumCPU(),
 		runtime.NumGoroutine(),
 	)
 
-	fmt.Fprintf(conn, "$%d\r\n%s\r\n", len(info), info)
+	fmt.Fprintf(ctx.Conn, "$%d\r\n%s\r\n", len(info), info)
 }

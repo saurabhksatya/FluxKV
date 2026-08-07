@@ -7,7 +7,12 @@ import (
 )
 
 type CommandInterface interface {
-	execute(conn net.Conn, cmd []string, db *internal.DataStore)
+	execute(ctx *ctxInterface, cmd []string)
+}
+
+type ctxInterface struct {
+	Conn net.Conn
+	DB   *internal.DataStore
 }
 
 var Commands = map[string]CommandInterface{}
@@ -20,6 +25,7 @@ func init() {
 	register("PING", &PingCommand{})
 	register("GET", &GetCommand{})
 	register("SET", &SetCommand{})
+	register("DEL", &DelCommand{})
 	register("INFO", &InfoCommand{})
 }
 
@@ -36,5 +42,10 @@ func ExecuteCommand(conn net.Conn, cmd []string, db *internal.DataStore) {
 		return
 	}
 
-	inter.execute(conn, cmd, db)
+	ctx := &ctxInterface{
+		Conn: conn,
+		DB:   db,
+	}
+
+	inter.execute(ctx, cmd)
 }
