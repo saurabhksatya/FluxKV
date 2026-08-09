@@ -9,12 +9,12 @@ import (
 func main() {
 	addr, err := net.ResolveTCPAddr("tcp", ":8000")
 	if err != nil {
-		utils.Logger.Fatal(err.Error())
+		utils.Logger.Fatal("%s", err.Error())
 	}
 
 	s := server.NewServer()
 
 	if err = s.Listen(addr); err != nil {
-		utils.Logger.Fatal(err.Error())
+		utils.Logger.Fatal("%s", err.Error())
 	}
 }

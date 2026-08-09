@@ -1,17 +1,24 @@
 package internal
 
 type DataStore struct {
-	data map[string]string
+	data          map[string]string
+	offsetManager *OffsetManager
 }
 
 func NewDataStore() *DataStore {
 	return &DataStore{
-		data: make(map[string]string),
+		data:          make(map[string]string),
+		offsetManager: NewOffsetManager(),
 	}
 }
 
 func (db *DataStore) Set(key, value string) {
 	db.data[key] = value
+	db.offsetManager.OffsetQueue <- OperationStructure{
+		Operation: "SET",
+		Key:       key,
+		Value:     value,
+	}
 }
 
 func (db *DataStore) Get(key string) (string, bool) {
@@ -23,6 +30,11 @@ func (db *DataStore) Delete(key string) bool {
 	_, exists := db.data[key]
 	if exists {
 		delete(db.data, key)
+		db.offsetManager.OffsetQueue <- OperationStructure{
+			Operation: "DEL",
+			Key:       key,
+			Value:     "",
+		}
 	}
 	return exists
 }
