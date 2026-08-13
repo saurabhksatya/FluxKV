@@ -49,3 +49,11 @@ func ExecuteCommand(conn net.Conn, cmd []string, db *internal.DataStore) {
 
 	inter.execute(ctx, cmd)
 }
+
+func IsWriteCommand(cmd string) bool {
+	switch cmd {
+	case "SET", "DEL":
+		return true
+	}
+	return false
+}

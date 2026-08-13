@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package replication;
+
+option go_package = "fluxKV/replication/proto";
+
+service ReplicateService {
+  rpc ReplicationConnect(stream ReplicationStreamConnectionRequest) returns (stream ReplicationStreamConnectionResponse);
+}
+
+enum Command {
+  NULL = 0;
+  SET = 1;
+  DEL = 2;
+}
+
+message ReplicationStreamConnectionRequest {
+  string id = 1;
+  uint64 offset = 2;
+}
+
+message ReplicationStreamConnectionResponse {
+  Command Op = 1;
+  string key = 2;
+  string value = 3;
+  uint64 offset = 4;
+  bool snapshot = 5;
+}

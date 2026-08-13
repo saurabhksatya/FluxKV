@@ -1,20 +1,37 @@
 package main
 
 import (
+	"flag"
+	"fluxKV/configuration"
 	"fluxKV/server"
 	"fluxKV/utils"
-	"net"
+	"os"
 )
 
 func main() {
-	addr, err := net.ResolveTCPAddr("tcp", ":8000")
+	configPath := flag.String("config", "config.yaml", "path to the config yaml")
+	flag.Parse()
+
+	cfg, err := configuration.Load(*configPath)
 	if err != nil {
-		utils.Logger.Fatal(err.Error())
+		utils.Logger.Fatal("%v", err)
 	}
 
-	s := server.NewServer()
+	id := os.Getenv("SERVER_ID")
+	if id == "" {
+		id = cfg.Servers[0].ID
+	}
 
-	if err = s.Listen(addr); err != nil {
-		utils.Logger.Fatal(err.Error())
+	self, err := cfg.FindByID(id)
+	if err != nil {
+		utils.Logger.Fatal("%v", err)
+	}
+
+	utils.Logger.Info("starting server %s (role=%s)", self.ID, self.Role)
+
+	s := server.NewServer(cfg, self)
+
+	if err = s.Listen(); err != nil {
+		utils.Logger.Fatal("%v", err)
 	}
 }

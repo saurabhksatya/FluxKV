@@ -3,7 +3,7 @@ package internal
 import "testing"
 
 func TestDataStore_SetGet(t *testing.T) {
-	db := NewDataStore()
+	db := NewDataStore(false)
 
 	db.Set("key1", "value1")
 	val, ok := db.Get("key1")
@@ -16,7 +16,7 @@ func TestDataStore_SetGet(t *testing.T) {
 }
 
 func TestDataStore_GetMissing(t *testing.T) {
-	db := NewDataStore()
+	db := NewDataStore(false)
 	_, ok := db.Get("missing")
 	if ok {
 		t.Fatal("expected key to not exist")
@@ -24,7 +24,7 @@ func TestDataStore_GetMissing(t *testing.T) {
 }
 
 func TestDataStore_Overwrite(t *testing.T) {
-	db := NewDataStore()
+	db := NewDataStore(false)
 	db.Set("key", "v1")
 	db.Set("key", "v2")
 	val, ok := db.Get("key")
@@ -34,7 +34,7 @@ func TestDataStore_Overwrite(t *testing.T) {
 }
 
 func TestDataStore_Delete(t *testing.T) {
-	db := NewDataStore()
+	db := NewDataStore(false)
 	db.Set("key", "val")
 	db.Delete("key")
 	_, ok := db.Get("key")
@@ -44,6 +44,6 @@ func TestDataStore_Delete(t *testing.T) {
 }
 
 func TestDataStore_DeleteMissing(t *testing.T) {
-	db := NewDataStore()
+	db := NewDataStore(false)
 	db.Delete("missing") // should not panic
 }

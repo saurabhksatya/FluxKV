@@ -1,0 +1,27 @@
+services:
+  server1:
+    build: .
+    image: fluxkv
+    pull_policy: never
+    container_name: fluxkv-main
+    environment:
+      - SERVER_ID=server1
+    volumes:
+      - ./config.docker.yaml:/app/config.yaml
+    ports:
+      - "8000:8000"
+      - "9000:9000"
+
+  server2:
+    image: fluxkv
+    pull_policy: never
+    container_name: fluxkv-replica
+    environment:
+      - SERVER_ID=server2
+    volumes:
+      - ./config.docker.yaml:/app/config.yaml
+    ports:
+      - "8001:8001"
+      - "9001:9001"
+    depends_on:
+      - server1

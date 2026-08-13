@@ -1,0 +1,12 @@
+server:
+  - id: server1
+    role: main
+    listen: "127.0.0.1:8000"
+    grpc_listen: "127.0.0.1:9000"
+  - id: server2
+    role: replica
+    listen: "127.0.0.1:8001"
+    grpc_listen: "127.0.0.1:9001"
+    main_addr: "127.0.0.1:9000"
+
+replication_factor: 2
