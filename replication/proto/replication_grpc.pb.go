@@ -20,7 +20,6 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	ReplicateService_ReplicationConnect_FullMethodName = "/replication.ReplicateService/ReplicationConnect"
-	ReplicateService_SnapshotConnect_FullMethodName    = "/replication.ReplicateService/SnapshotConnect"
 )
 
 // ReplicateServiceClient is the client API for ReplicateService service.
@@ -28,7 +27,6 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ReplicateServiceClient interface {
 	ReplicationConnect(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[ReplicationStreamConnectionRequest, ReplicationStreamConnectionResponse], error)
-	SnapshotConnect(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[SnapshotRequest, SnapshotResponse], error)
 }
 
 type replicateServiceClient struct {
@@ -52,25 +50,11 @@ func (c *replicateServiceClient) ReplicationConnect(ctx context.Context, opts ..
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type ReplicateService_ReplicationConnectClient = grpc.BidiStreamingClient[ReplicationStreamConnectionRequest, ReplicationStreamConnectionResponse]
 
-func (c *replicateServiceClient) SnapshotConnect(ctx context.Context, opts ...grpc.CallOption) (grpc.BidiStreamingClient[SnapshotRequest, SnapshotResponse], error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	stream, err := c.cc.NewStream(ctx, &ReplicateService_ServiceDesc.Streams[1], ReplicateService_SnapshotConnect_FullMethodName, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	x := &grpc.GenericClientStream[SnapshotRequest, SnapshotResponse]{ClientStream: stream}
-	return x, nil
-}
-
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type ReplicateService_SnapshotConnectClient = grpc.BidiStreamingClient[SnapshotRequest, SnapshotResponse]
-
 // ReplicateServiceServer is the server API for ReplicateService service.
 // All implementations must embed UnimplementedReplicateServiceServer
 // for forward compatibility.
 type ReplicateServiceServer interface {
 	ReplicationConnect(grpc.BidiStreamingServer[ReplicationStreamConnectionRequest, ReplicationStreamConnectionResponse]) error
-	SnapshotConnect(grpc.BidiStreamingServer[SnapshotRequest, SnapshotResponse]) error
 	mustEmbedUnimplementedReplicateServiceServer()
 }
 
@@ -83,9 +67,6 @@ type UnimplementedReplicateServiceServer struct{}
 
 func (UnimplementedReplicateServiceServer) ReplicationConnect(grpc.BidiStreamingServer[ReplicationStreamConnectionRequest, ReplicationStreamConnectionResponse]) error {
 	return status.Error(codes.Unimplemented, "method ReplicationConnect not implemented")
-}
-func (UnimplementedReplicateServiceServer) SnapshotConnect(grpc.BidiStreamingServer[SnapshotRequest, SnapshotResponse]) error {
-	return status.Error(codes.Unimplemented, "method SnapshotConnect not implemented")
 }
 func (UnimplementedReplicateServiceServer) mustEmbedUnimplementedReplicateServiceServer() {}
 func (UnimplementedReplicateServiceServer) testEmbeddedByValue()                          {}
@@ -115,13 +96,6 @@ func _ReplicateService_ReplicationConnect_Handler(srv interface{}, stream grpc.S
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type ReplicateService_ReplicationConnectServer = grpc.BidiStreamingServer[ReplicationStreamConnectionRequest, ReplicationStreamConnectionResponse]
 
-func _ReplicateService_SnapshotConnect_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(ReplicateServiceServer).SnapshotConnect(&grpc.GenericServerStream[SnapshotRequest, SnapshotResponse]{ServerStream: stream})
-}
-
-// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type ReplicateService_SnapshotConnectServer = grpc.BidiStreamingServer[SnapshotRequest, SnapshotResponse]
-
 // ReplicateService_ServiceDesc is the grpc.ServiceDesc for ReplicateService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -133,12 +107,6 @@ var ReplicateService_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "ReplicationConnect",
 			Handler:       _ReplicateService_ReplicationConnect_Handler,
-			ServerStreams: true,
-			ClientStreams: true,
-		},
-		{
-			StreamName:    "SnapshotConnect",
-			Handler:       _ReplicateService_SnapshotConnect_Handler,
 			ServerStreams: true,
 			ClientStreams: true,
 		},

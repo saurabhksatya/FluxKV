@@ -6,7 +6,6 @@ option go_package = "fluxKV/replication/proto";
 
 service ReplicateService {
   rpc ReplicationConnect(stream ReplicationStreamConnectionRequest) returns (stream ReplicationStreamConnectionResponse);
-  rpc SnapshotConnect(stream SnapshotRequest) returns (stream SnapshotResponse);
 }
 
 enum Command {
@@ -21,20 +20,9 @@ message ReplicationStreamConnectionRequest {
 }
 
 message ReplicationStreamConnectionResponse {
-  bool success = 1;
-  Command Op = 2;
-  string key = 3;
-  string value = 4;
-  bool takeSnapshot = 5;
-}
-
-message SnapshotRequest {
-  string id = 1;
-}
-
-message SnapshotResponse {
   Command Op = 1;
   string key = 2;
   string value = 3;
   uint64 offset = 4;
+  bool snapshot = 5;
 }

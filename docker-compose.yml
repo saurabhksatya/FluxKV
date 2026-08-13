@@ -1,6 +1,8 @@
 services:
   server1:
     build: .
+    image: fluxkv
+    pull_policy: never
     container_name: fluxkv-main
     environment:
       - SERVER_ID=server1
@@ -11,7 +13,8 @@ services:
       - "9000:9000"
 
   server2:
-    build: .
+    image: fluxkv
+    pull_policy: never
     container_name: fluxkv-replica
     environment:
       - SERVER_ID=server2

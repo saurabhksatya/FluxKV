@@ -124,11 +124,11 @@ func (x *ReplicationStreamConnectionRequest) GetOffset() uint64 {
 
 type ReplicationStreamConnectionResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
-	Op            Command                `protobuf:"varint,2,opt,name=Op,proto3,enum=replication.Command" json:"Op,omitempty"`
-	Key           string                 `protobuf:"bytes,3,opt,name=key,proto3" json:"key,omitempty"`
-	Value         string                 `protobuf:"bytes,4,opt,name=value,proto3" json:"value,omitempty"`
-	TakeSnapshot  bool                   `protobuf:"varint,5,opt,name=takeSnapshot,proto3" json:"takeSnapshot,omitempty"`
+	Op            Command                `protobuf:"varint,1,opt,name=Op,proto3,enum=replication.Command" json:"Op,omitempty"`
+	Key           string                 `protobuf:"bytes,2,opt,name=key,proto3" json:"key,omitempty"`
+	Value         string                 `protobuf:"bytes,3,opt,name=value,proto3" json:"value,omitempty"`
+	Offset        uint64                 `protobuf:"varint,4,opt,name=offset,proto3" json:"offset,omitempty"`
+	Snapshot      bool                   `protobuf:"varint,5,opt,name=snapshot,proto3" json:"snapshot,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -163,13 +163,6 @@ func (*ReplicationStreamConnectionResponse) Descriptor() ([]byte, []int) {
 	return file_replication_proto_replication_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *ReplicationStreamConnectionResponse) GetSuccess() bool {
-	if x != nil {
-		return x.Success
-	}
-	return false
-}
-
 func (x *ReplicationStreamConnectionResponse) GetOp() Command {
 	if x != nil {
 		return x.Op
@@ -191,123 +184,18 @@ func (x *ReplicationStreamConnectionResponse) GetValue() string {
 	return ""
 }
 
-func (x *ReplicationStreamConnectionResponse) GetTakeSnapshot() bool {
-	if x != nil {
-		return x.TakeSnapshot
-	}
-	return false
-}
-
-type SnapshotRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *SnapshotRequest) Reset() {
-	*x = SnapshotRequest{}
-	mi := &file_replication_proto_replication_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SnapshotRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SnapshotRequest) ProtoMessage() {}
-
-func (x *SnapshotRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_replication_proto_replication_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SnapshotRequest.ProtoReflect.Descriptor instead.
-func (*SnapshotRequest) Descriptor() ([]byte, []int) {
-	return file_replication_proto_replication_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *SnapshotRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-type SnapshotResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Op            Command                `protobuf:"varint,1,opt,name=Op,proto3,enum=replication.Command" json:"Op,omitempty"`
-	Key           string                 `protobuf:"bytes,2,opt,name=key,proto3" json:"key,omitempty"`
-	Value         string                 `protobuf:"bytes,3,opt,name=value,proto3" json:"value,omitempty"`
-	Offset        uint64                 `protobuf:"varint,4,opt,name=offset,proto3" json:"offset,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *SnapshotResponse) Reset() {
-	*x = SnapshotResponse{}
-	mi := &file_replication_proto_replication_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SnapshotResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SnapshotResponse) ProtoMessage() {}
-
-func (x *SnapshotResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_replication_proto_replication_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SnapshotResponse.ProtoReflect.Descriptor instead.
-func (*SnapshotResponse) Descriptor() ([]byte, []int) {
-	return file_replication_proto_replication_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *SnapshotResponse) GetOp() Command {
-	if x != nil {
-		return x.Op
-	}
-	return Command_NULL
-}
-
-func (x *SnapshotResponse) GetKey() string {
-	if x != nil {
-		return x.Key
-	}
-	return ""
-}
-
-func (x *SnapshotResponse) GetValue() string {
-	if x != nil {
-		return x.Value
-	}
-	return ""
-}
-
-func (x *SnapshotResponse) GetOffset() uint64 {
+func (x *ReplicationStreamConnectionResponse) GetOffset() uint64 {
 	if x != nil {
 		return x.Offset
 	}
 	return 0
+}
+
+func (x *ReplicationStreamConnectionResponse) GetSnapshot() bool {
+	if x != nil {
+		return x.Snapshot
+	}
+	return false
 }
 
 var File_replication_proto_replication_proto protoreflect.FileDescriptor
@@ -317,27 +205,19 @@ const file_replication_proto_replication_proto_rawDesc = "" +
 	"#replication/proto/replication.proto\x12\vreplication\"L\n" +
 	"\"ReplicationStreamConnectionRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x16\n" +
-	"\x06offset\x18\x02 \x01(\x04R\x06offset\"\xb1\x01\n" +
-	"#ReplicationStreamConnectionResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\x12$\n" +
-	"\x02Op\x18\x02 \x01(\x0e2\x14.replication.CommandR\x02Op\x12\x10\n" +
-	"\x03key\x18\x03 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x04 \x01(\tR\x05value\x12\"\n" +
-	"\ftakeSnapshot\x18\x05 \x01(\bR\ftakeSnapshot\"!\n" +
-	"\x0fSnapshotRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"x\n" +
-	"\x10SnapshotResponse\x12$\n" +
+	"\x06offset\x18\x02 \x01(\x04R\x06offset\"\xa7\x01\n" +
+	"#ReplicationStreamConnectionResponse\x12$\n" +
 	"\x02Op\x18\x01 \x01(\x0e2\x14.replication.CommandR\x02Op\x12\x10\n" +
 	"\x03key\x18\x02 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x03 \x01(\tR\x05value\x12\x16\n" +
-	"\x06offset\x18\x04 \x01(\x04R\x06offset*%\n" +
+	"\x06offset\x18\x04 \x01(\x04R\x06offset\x12\x1a\n" +
+	"\bsnapshot\x18\x05 \x01(\bR\bsnapshot*%\n" +
 	"\aCommand\x12\b\n" +
 	"\x04NULL\x10\x00\x12\a\n" +
 	"\x03SET\x10\x01\x12\a\n" +
-	"\x03DEL\x10\x022\xe3\x01\n" +
+	"\x03DEL\x10\x022\x8f\x01\n" +
 	"\x10ReplicateService\x12{\n" +
-	"\x12ReplicationConnect\x12/.replication.ReplicationStreamConnectionRequest\x1a0.replication.ReplicationStreamConnectionResponse(\x010\x01\x12R\n" +
-	"\x0fSnapshotConnect\x12\x1c.replication.SnapshotRequest\x1a\x1d.replication.SnapshotResponse(\x010\x01B\x1aZ\x18fluxKV/replication/protob\x06proto3"
+	"\x12ReplicationConnect\x12/.replication.ReplicationStreamConnectionRequest\x1a0.replication.ReplicationStreamConnectionResponse(\x010\x01B\x1aZ\x18fluxKV/replication/protob\x06proto3"
 
 var (
 	file_replication_proto_replication_proto_rawDescOnce sync.Once
@@ -352,26 +232,21 @@ func file_replication_proto_replication_proto_rawDescGZIP() []byte {
 }
 
 var file_replication_proto_replication_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_replication_proto_replication_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_replication_proto_replication_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_replication_proto_replication_proto_goTypes = []any{
 	(Command)(0), // 0: replication.Command
 	(*ReplicationStreamConnectionRequest)(nil),  // 1: replication.ReplicationStreamConnectionRequest
 	(*ReplicationStreamConnectionResponse)(nil), // 2: replication.ReplicationStreamConnectionResponse
-	(*SnapshotRequest)(nil),                     // 3: replication.SnapshotRequest
-	(*SnapshotResponse)(nil),                    // 4: replication.SnapshotResponse
 }
 var file_replication_proto_replication_proto_depIdxs = []int32{
 	0, // 0: replication.ReplicationStreamConnectionResponse.Op:type_name -> replication.Command
-	0, // 1: replication.SnapshotResponse.Op:type_name -> replication.Command
-	1, // 2: replication.ReplicateService.ReplicationConnect:input_type -> replication.ReplicationStreamConnectionRequest
-	3, // 3: replication.ReplicateService.SnapshotConnect:input_type -> replication.SnapshotRequest
-	2, // 4: replication.ReplicateService.ReplicationConnect:output_type -> replication.ReplicationStreamConnectionResponse
-	4, // 5: replication.ReplicateService.SnapshotConnect:output_type -> replication.SnapshotResponse
-	4, // [4:6] is the sub-list for method output_type
-	2, // [2:4] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	1, // 1: replication.ReplicateService.ReplicationConnect:input_type -> replication.ReplicationStreamConnectionRequest
+	2, // 2: replication.ReplicateService.ReplicationConnect:output_type -> replication.ReplicationStreamConnectionResponse
+	2, // [2:3] is the sub-list for method output_type
+	1, // [1:2] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_replication_proto_replication_proto_init() }
@@ -385,7 +260,7 @@ func file_replication_proto_replication_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_replication_proto_replication_proto_rawDesc), len(file_replication_proto_replication_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   4,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
