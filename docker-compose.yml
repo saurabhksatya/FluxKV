@@ -15,13 +15,27 @@ services:
   server2:
     image: fluxkv
     pull_policy: never
-    container_name: fluxkv-replica
+    container_name: fluxkv-replica1
     environment:
       - SERVER_ID=server2
     volumes:
       - ./config.docker.yaml:/app/config.yaml
     ports:
-      - "8001:8001"
-      - "9001:9001"
+      - "8001:8000"
+      - "9001:9000"
+    depends_on:
+      - server1
+  
+  server3:
+    image: fluxkv
+    pull_policy: never
+    container_name: fluxkv-replica2
+    environment:
+      - SERVER_ID=server3
+    volumes:
+      - ./config.docker.yaml:/app/config.yaml
+    ports:
+      - "8002:8000"
+      - "9002:9000"
     depends_on:
       - server1

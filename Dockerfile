@@ -13,6 +13,6 @@ COPY --from=build /fluxkv /fluxkv
 
 WORKDIR /app
 
-EXPOSE 8000 8001 9000 9001
+EXPOSE 8000 9000
 
 ENTRYPOINT ["/fluxkv"]

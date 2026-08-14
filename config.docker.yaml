@@ -5,8 +5,13 @@ server:
     grpc_listen: "0.0.0.0:9000"
   - id: server2
     role: replica
-    listen: "0.0.0.0:8001"
-    grpc_listen: "0.0.0.0:9001"
+    listen: "0.0.0.0:8000"
+    grpc_listen: "0.0.0.0:9000"
+    main_addr: "server1:9000"
+  - id: server3
+    role: replica
+    listen: "0.0.0.0:8000"
+    grpc_listen: "0.0.0.0:9000"
     main_addr: "server1:9000"
 
 replication_factor: 2
